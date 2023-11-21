@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Funeral Agency</title>
+</head>
+
+<body>
+    <h1>Welcome to the Funeral Agency</h1>
+
+    {% if username %}
+    <p>Hello, {{ username }}!</p>
+    <a href="{{ url_for('main.logout') }}">Logout</a>
+    {% else %}
+    <p>Please <a href="{{ url_for('main.login') }}">login</a> or <a href="{{ url_for('main.register') }}">register</a>
+        to access
+        funeral agency services.</p>
+    {% endif %}
+
+    <!-- Display funeral agency content here -->
+    <h2>Caskets</h2>
+    <ul>
+        {% for casket in caskets %}
+        <li>{{ casket.wood_type }} - {{ casket.length }} x {{ casket.width }} x {{ casket.depth }}</li>
+        {% endfor %}
+    </ul>
+
+    <h2>Tombstones</h2>
+    <ul>
+        {% for tombstone in tombstones %}
+        <li>{{ tombstone }}</li>
+        {% endfor %}
+    </ul>
+
+    <h2>Urns</h2>
+    <ul>
+        {% for urn in urns %}
+        <li>{{ urn }}</li>
+        {% endfor %}
+    </ul>
+
+    <!-- Add a link to the payment page -->
+    <a href="{{ url_for('main.pay') }}">Make a Payment</a>
+
+</body>
+
+</html>
