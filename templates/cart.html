@@ -1,0 +1,26 @@
+<!-- cart.html -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Funeral Agency</title>
+</head>
+
+<body>
+    <h1>Welcome to the Funeral Agency</h1>
+
+    <h2>Your Cart</h2>
+    <ul>
+        <!-- Display items in the cart -->
+    </ul>
+    <a href="{{ url_for('main.payment') }}">Proceed to Payment</a>
+
+    {% if username %}
+    <a href="{{ url_for('main.logout') }}">Logout</a>
+    {% endif %}
+
+</body>
+
+</html>
