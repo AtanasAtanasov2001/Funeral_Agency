@@ -1,10 +1,9 @@
 ﻿# routes.py
-from flask import Blueprint, render_template, request, redirect, url_for, session
-from src.classes import users, User, caskets, tombstones, urns, cart
+from flask import Blueprint, render_template, request, redirect, url_for, session, flash
+from src.classes import users, User, Casket, Tombstone, Urn, caskets, tombstones, urns, cart
 
 main_blueprint = Blueprint("main", __name__)
 
-from app import app
 
 def home():
     username = session.get("username")
@@ -119,12 +118,18 @@ def choose_burial_type():
 
 main_blueprint.route("/choose_burial_type", methods=["GET", "POST"])(choose_burial_type)
 
+
 def customize(burial_type):
+    print("Entered Endpoint")
     # Ensure a valid burial type is selected
     if burial_type not in ["Cremation", "Ordinary"]:
         return redirect(url_for("main.home"))
 
     if request.method == "POST":
+        # Handle customization options for POST requests
+        print("Handling POST request")
+        print(request.form)  # Print the form data for debugging
+
         # Handle customization options for POST requests
         if burial_type == "Ordinary":
             # Handle customization options for Ordinary Burial (caskets and tombstones)
@@ -134,8 +139,20 @@ def customize(burial_type):
             depth = int(request.form.get("depth"))
 
             # Add the customized casket to the cart (you can replace this with your logic)
-            casket = Casket(wood_type, length, width, depth)
+            caskets.append(Casket(wood_type, length, width, depth))
             # Add the casket to the cart or perform other actions as needed
+            # ...
+
+            # Handle customization options for Tombstone
+            stone_type = request.form.get("stone_type")
+            engraving = request.form.get("engraving")
+            length_tombstone = int(request.form.get("tombstone_length"))
+            width_tombstone = int(request.form.get("tombstone_width"))
+            height_tombstone = int(request.form.get("tombstone_height"))
+
+            # Add the customized tombstone to the cart (you can replace this with your logic)
+            tombstones.append(Tombstone(stone_type, engraving, length_tombstone, width_tombstone, height_tombstone))
+            # Add the tombstone to the cart or perform other actions as needed
             # ...
 
         elif burial_type == "Cremation":
@@ -144,16 +161,18 @@ def customize(burial_type):
             kind = request.form.get("kind")
 
             # Add the customized urn to the cart (you can replace this with your logic)
-            urn = Urn(volume, kind)
+            urns.append(Urn(volume, kind))
             # Add the urn to the cart or perform other actions as needed
             # ...
 
-    # Render the customization page with burial type information for GET requests
-    if request.method == "GET":
-        return render_template("customize.html", burial_type=burial_type, caskets=caskets, tombstones=tombstones, urns=urns)
+        session.setdefault("_flashes", []).append(("success", "Customization data saved successfully"))
 
-    # Redirect to the home page or another appropriate page after handling the customization
-    return redirect(url_for("main.home"))
+        # Redirect to the customization page with the burial type
+        return redirect(url_for("main.customize", burial_type=burial_type))
+
+    print("Handling GET request")
+    # Render the customization page with burial type information for GET requests
+    return render_template("templates/customize.html", burial_type=burial_type, caskets=caskets, tombstones=tombstones, urns=urns)
 
 main_blueprint.route("/customize/<burial_type>", methods=["GET", "POST"])(customize)
 

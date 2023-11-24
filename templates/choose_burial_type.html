@@ -14,22 +14,24 @@
     <form method="post" action="{{ url_for('main.choose_burial_type') }}">
         <label for="burial_type">Select Burial Type:</label>
         <select name="burial_type" required>
-            <option value="ordinary">Ordinary Burial</option>
-            <option value="cremation">Cremation</option>
+            <option value="Ordinary">Ordinary Burial</option>
+            <option value="Cremation">Cremation</option>
         </select>
         <button type="submit">Submit</button>
     </form>
 
-    <!-- Add automatic redirection script -->
-    <script>
-        // Redirect to the customization page after form submission
-        document.addEventListener('DOMContentLoaded', function () {
-            document.querySelector('form').addEventListener('submit', function () {
-                var selectedBurialType = document.querySelector('select[name="burial_type"]').value;
-                window.location.href = "{{ url_for('main.customize', burial_type='') }}" + selectedBurialType;
+    {% if burial_type %}
+        <!-- Update the JavaScript to use window.location.href directly -->
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                document.querySelector('form').addEventListener('submit', function (event) {
+                    event.preventDefault(); // Prevent the default form submission
+                    var selectedBurialType = document.querySelector('select[name="burial_type"]').value;
+                    window.location.href = "{{ url_for('main.customize', burial_type='') }}" + selectedBurialType;
+                });
             });
-        });
-    </script>
+        </script>
+    {% endif %}
 </body>
 
 </html>

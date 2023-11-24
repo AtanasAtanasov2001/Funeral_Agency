@@ -9,43 +9,52 @@
 </head>
 
 <body>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
     <h1>Customize {{ burial_type }} Burial</h1>
 
     {% if burial_type == 'Ordinary' %}
-        <!-- Display customization options for Ordinary Burial (caskets and tombstones) -->
         <form method="post" action="{{ url_for('main.customize', burial_type=burial_type) }}">
             <h2>Choose Casket</h2>
             <label for="wood_type">Wood Type:</label>
-            <select name="wood_type" required>
+            <select id="wood_type" name="wood_type" required>
                 {% for casket in caskets %}
                     <option value="{{ casket.wood_type }}">{{ casket.wood_type }}</option>
                 {% endfor %}
             </select>
-            <label for="length">Length:</label>
-            <input type="number" name="length" required>
-            <label for="width">Width:</label>
-            <input type="number" name="width" required>
-            <label for="depth">Depth:</label>
-            <input type="number" name="depth" required>
+            <label for="casket_length">Length:</label>
+            <input type="number" id="casket_length" name="length" required>
+            <label for="casket_width">Width:</label>
+            <input type="number" id="casket_width" name="width" required>
+            <label for="casket_depth">Depth:</label>
+            <input type="number" id="casket_depth" name="depth" required>
             <button type="submit">Add to Cart</button>
         </form>
 
-        <h2>Choose Tombstone</h2>
+        
         <form method="post" action="{{ url_for('main.customize', burial_type=burial_type) }}">
+            <h2>Choose Tombstone</h2>
             <label for="stone_type">Stone Type:</label>
-            <select name="stone_type" required>
+            <select id="stone_type" name="stone_type" required>
                 {% for tombstone in tombstones %}
                     <option value="{{ tombstone.stone_type }}">{{ tombstone.stone_type }}</option>
                 {% endfor %}
             </select>
             <label for="engraving">Engraving:</label>
-            <input type="text" name="engraving" required>
+            <input type="text" id="engraving" name="engraving" required>
             <label for="tombstone_length">Length:</label>
-            <input type="number" name="tombstone_length" required>
+            <input type="number" id="tombstone_length" name="tombstone_length" required>
             <label for="tombstone_width">Width:</label>
-            <input type="number" name="tombstone_width" required>
+            <input type="number" id="tombstone_width" name="tombstone_width" required>
             <label for="tombstone_height">Height:</label>
-            <input type="number" name="tombstone_height" required>
+            <input type="number" id="tombstone_height" name="tombstone_height" required>
             <button type="submit">Add to Cart</button>
         </form>
 
@@ -53,10 +62,10 @@
         <!-- Display customization options for Cremation (urns) -->
         <form method="post" action="{{ url_for('main.customize', burial_type=burial_type) }}">
             <h2>Choose Urn</h2>
-            <label for="volume">Volume:</label>
-            <input type="number" name="volume" required>
-            <label for="kind">Kind:</label>
-            <select name="kind" required>
+            <label for="urn_volume">Volume:</label>
+            <input type="number" id="urn_volume" name="volume" required>
+            <label for="urn_kind">Kind:</label>
+            <select id="urn_kind" name="kind" required>
                 {% for urn in urns %}
                     <option value="{{ urn.kind }}">{{ urn.kind }}</option>
                 {% endfor %}
