@@ -1,3 +1,4 @@
+
 # Define classes for Casket, Tombstone, and Urn
 class Casket:
     def __init__(self, wood_type, length, width, depth):
@@ -5,6 +6,14 @@ class Casket:
         self.length = length
         self.width = width
         self.depth = depth
+
+    def display(self):
+        return f"Casket - Wood Type: {self.wood_type}, Length: {self.length}, Width: {self.width}, Depth: {self.depth}"
+    
+    def calculate_price(self):
+        # Implement casket pricing logic
+        prices = {"Oak": 500, "Mahogany": 600, "Pine": 650, "Walnut": 1000}
+        return prices.get(self.wood_type, 0)
 
 
 caskets = [Casket("Oak", 215, 80, 60), Casket("Mahogany", 215, 80, 60), Casket("Pine", 215, 80, 60), Casket("Walnut", 215, 80, 60)]
@@ -17,7 +26,14 @@ class Tombstone:
         self.length = length
         self.width = width
         self.height = height
+        
+    def display(self):
+        return f"Tombstone - Stone Type: {self.stone_type}, Engraving: {self.engraving}, Length: {self.length}, Width: {self.width}, Height: {self.height}"
 
+    def calculate_price(self):
+        # Implement tombstone pricing logic
+        prices = {"Wood": 800, "Marble": 1000, "Granite": 1500, "Bronze": 4500}
+        return prices.get(self.stone_type, 0)
 
 tombstones = [
     Tombstone("Wood", "In Loving Memory", 150, 70, 150),
@@ -28,11 +44,26 @@ tombstones = [
 # tombstones = [...]
 
 class Urn:
-    def __init__(self, volume, kind):
+    def __init__(self, volume, material, color):
         self.volume = volume
-        self.kind = kind
+        self.material = material
+        self.color = color
+        
+    def display(self):
+        color_display = self.color.capitalize() if self.color is not None else "N/A"
+        return f"Urn - Volume: {self.volume}, Material: {self.material}, Color: {color_display}"
+    
+    def calculate_price(self):
+        # Check if any of the attributes is None
+        if self.volume is None or self.material is None or self.color is None:
+            return 0
+        
+        # Implement urn pricing logic
+        prices = {"Plastic": 100, "Metal": 200, "Ceramic": 500}
+        return prices.get(self.material, 0)
 
-urns = [Urn(250, "Plastic"), Urn(250, "Metal"), Urn(250, "Ceramic")]
+urns = [Urn(250, "Plastic", "Black"), Urn(250, "Metal", "Black"), Urn(250, "Ceramic", "Black")]
+
 # urns = [...]
 
 # User class for registration and login
@@ -46,7 +77,6 @@ users = [User("john_doe", "password123"), User("jane_smith", "pass456")]
 # users = [...]
 
 
-# Cart class to store selected items
 class Cart:
     def __init__(self):
         self.items = []
@@ -59,28 +89,12 @@ class Cart:
         total_price = 0
         for item in self.items:
             if isinstance(item, Casket):
-                total_price += calculate_casket_price(item)
+                total_price += item.calculate_price()
             elif isinstance(item, Tombstone):
-                total_price += calculate_tombstone_price(item)
+                total_price += item.calculate_price()
             elif isinstance(item, Urn):
-                total_price += calculate_urn_price(item)
+                total_price += item.calculate_price()
         return total_price
-
-def calculate_casket_price(casket):
-    # Implement casket pricing logic
-    prices = {"Oak": 500, "Mahogany": 600, "Pine": 650, "Walnut": 1000}
-    return prices.get(casket.wood_type, 0)
-
-def calculate_tombstone_price(tombstone):
-    # Implement tombstone pricing logic
-    prices = {"Wood": 800, "Marble": 1000, "Granite": 1500, "Bronze": 4500}
-    return prices.get(tombstone.stone_type, 0)
-
-def calculate_urn_price(urn):
-    # Implement urn pricing logic
-    prices = {"Plastic": 100, "Metal": 200, "Ceramic": 500}
-    return prices.get(urn.material, 0)
-
-
+    
 # Cart instance
 cart = Cart()

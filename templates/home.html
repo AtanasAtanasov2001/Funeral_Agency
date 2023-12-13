@@ -17,20 +17,16 @@
         {% if not burial_type %}
             <!-- Display burial type selection after logging in -->
             <h2>Choose Burial Type</h2>
-            <form method="post" action="{{ url_for('main.choose_burial_type') }}">
-                <label for="burial_type">Select Burial Type:</label>
-                <select name="burial_type" required>
-                    <option value="ordinary">Ordinary Burial</option>
-                    <option value="cremation">Cremation</option>
-                </select>
-                <button type="submit">Submit</button>
-            </form>
+            <ul>
+                <li><a href="{{ url_for('main.default_contents', burial_type='ordinary') }}">Ordinary Burial</a></li>
+                <li><a href="{{ url_for('main.default_contents', burial_type='cremation') }}">Cremation</a></li>
+            </ul>
         {% else %}
             <!-- Display customization options based on the selected type -->
             {% if burial_type == 'ordinary' %}
-                <a href="{{ url_for('main.customize', burial_type='ordinary') }}">Choose items for ordinary type of funeral</a>
+                <a href="{{ url_for('main.default_contents', burial_type='ordinary') }}">Ordinary Burial</a>
             {% elif burial_type == 'cremation' %}
-                <a href="{{ url_for('main.customize', burial_type='cremation') }}">Choose items for cremation type of funeral</a>
+                <a href="{{ url_for('main.default_contents', burial_type='cremation') }}">Cremation</a>
             {% endif %}
         {% endif %}
     {% else %}
@@ -51,7 +47,7 @@
     {% endif %}
 
     <!-- Add a link to the cart page -->
-    <a href="{{ url_for('main.cart') }}">View Cart</a>
+    <a href="{{ url_for('main.cart_contents') }}">View Cart</a>
 
 </body>
 
