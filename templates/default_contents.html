@@ -1,0 +1,40 @@
+<!-- default_contents.html -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Default Choices</title>
+</head>
+
+<body>
+
+    <h1>Default Choices</h1>
+
+    {% if default_choices %}
+        <ul>
+            {% for item in default_choices %}
+                <li>{{ item.display() }} - Price: ${{ item.calculate_price() }}</li>
+            {% endfor %}
+        </ul>
+        <form method="post" action="{{ url_for('main.add_to_cart') }}">
+            <input type="hidden" name="burial_type" value="{{ burial_type }}">
+            <label for="item_type">Select {{ item_type }}:</label>
+            <select id="item_type" name="item_type" required>
+                {% for item in default_choices %}
+                    <option value="{{ item.display() }}">{{ item.display() }}</option>
+                {% endfor %}
+            </select>
+            <button type="submit">Add to Cart</button>
+        </form>
+        <a href="{{ url_for('main.customize', burial_type=burial_type) }}">Customize</a>
+    {% else %}
+        <p>No default choices available.</p>
+    {% endif %}
+
+    <a href="{{ url_for('main.home') }}">Return to Home Page</a>
+
+</body>
+
+</html>

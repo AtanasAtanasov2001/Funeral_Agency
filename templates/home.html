@@ -1,0 +1,54 @@
+<!-- home.html -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Funeral Agency</title>
+</head>
+
+<body>
+
+    {% if username %}
+        <p>Hello, {{ username }}!</p>
+        <a href="{{ url_for('main.logout') }}">Logout</a>
+
+        {% if not burial_type %}
+            <!-- Display burial type selection after logging in -->
+            <h2>Choose Burial Type</h2>
+            <ul>
+                <li><a href="{{ url_for('main.default_contents', burial_type='ordinary') }}">Ordinary Burial</a></li>
+                <li><a href="{{ url_for('main.default_contents', burial_type='cremation') }}">Cremation</a></li>
+            </ul>
+        {% else %}
+            <!-- Display customization options based on the selected type -->
+            {% if burial_type == 'ordinary' %}
+                <a href="{{ url_for('main.default_contents', burial_type='ordinary') }}">Ordinary Burial</a>
+            {% elif burial_type == 'cremation' %}
+                <a href="{{ url_for('main.default_contents', burial_type='cremation') }}">Cremation</a>
+            {% endif %}
+        {% endif %}
+    {% else %}
+        <!-- Display a picture and a login form if not logged in -->
+        <img src="{{ url_for('static', filename='Funeral_agency_logo.jpg') }}" alt="Funeral Agency Picture">
+        <h2>Login</h2>
+        {% if error %}
+            <p style="color: red;">{{ error }}</p>
+        {% endif %}
+        <form method="post" action="{{ url_for('main.login') }}">
+            <label for="username">Username:</label>
+            <input type="text" name="username" required>
+            <label for="password">Password:</label>
+            <input type="password" name="password" required>
+            <button type="submit">Login</button>
+        </form>
+        <a href="{{ url_for('main.register') }}">Register</a>
+    {% endif %}
+
+    <!-- Add a link to the cart page -->
+    <a href="{{ url_for('main.cart_contents') }}">View Cart</a>
+
+</body>
+
+</html>
