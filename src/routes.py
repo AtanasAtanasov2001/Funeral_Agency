@@ -95,8 +95,8 @@ def parse_display_string(display_string):
     # Determine the item type and create the corresponding object
     if item_info["Item Type"] == "Urn":
         return Urn(
-            volume=int(item_info.get("Volume", 0)),
             material=item_info.get("Material", ""),
+            volume=int(item_info.get("Volume", 0)),
             color=item_info.get("Color", "")
         )
     elif item_info["Item Type"] == "Casket":
@@ -120,17 +120,68 @@ def parse_display_string(display_string):
     return None
 
 
-def add_to_cart():
+def add_to_cart(customize = False):
     print("ENTER ADD_TO_CART")
     item_type = request.form.get("item_type")
     burial_type = request.form.get("burial_type")
     print("Item Type:", item_type)
     print("Burial Type:", burial_type)
     
-    item = parse_display_string(item_type)
+    if customize == True:
+        if burial_type == "ordinary":
+            # Handle customization options for Ordinary Burial (caskets and tombstones)
+            wood_type = request.form.get("wood_type")
+            length = int(request.form.get("length"))
+            width = int(request.form.get("width"))
+            depth = int(request.form.get("depth"))
 
+            if length < 0 or width < 0 or depth < 0:
+                raise ValueError("The length/width/depth must be positive number")
+            # Add the customized casket to the cart
+            new_casket = Casket(wood_type, length, width, depth)
+            caskets.append(new_casket)
+            cart.add_item(new_casket)
+
+
+            # Handle customization options for Tombstone
+            stone_type = request.form.get("stone_type")
+            engraving = request.form.get("engraving")
+            length_tombstone = int(request.form.get("tombstone_length"))
+            width_tombstone = int(request.form.get("tombstone_width"))
+            height_tombstone = int(request.form.get("tombstone_height"))
+
+            if length_tombstone < 0 or width_tombstone < 0 or height_tombstone < 0:
+                raise ValueError("The length/width/height must be positive number")
+            
+            # Add the customized tombstone to the cart
+            new_tombstone = Tombstone(stone_type, engraving, length_tombstone, width_tombstone, height_tombstone)
+            tombstones.append(new_tombstone)
+            cart.add_item(new_tombstone)
+
+
+        elif burial_type == "cremation":
+            # Handle customization options for Cremation (urns)
+            volume = int(request.form.get("volume"))
+            if volume < 0:
+                raise ValueError("The volume must be positive number")
+            
+            kind = request.form.get("kind")
+            color = request.form.get("color")
+
+            # Add the customized urn to the cart
+            new_urn = Urn(volume, kind, color)
+            urns.append(new_urn)
+            cart.add_item(new_urn)
+
+        session.setdefault("_flashes", []).append(("success", "Customization data saved successfully"))
+
+        # Redirect to the customization page with the burial type
+        return redirect(url_for("main.customize", burial_type=burial_type))
     # Add the selected item to the cart
-    cart.add_item(item)
+    else:
+        item = parse_display_string(item_type)
+
+        cart.add_item(item)
 
     return redirect(url_for("main.cart_contents"))
 
@@ -178,53 +229,53 @@ def customize(burial_type):
     # print("Existing Tombstones:", existing_tombstones)
     # print("Existing Urns:", existing_urns)
 
-    if request.method == "POST":
-        # Handle customization options for POST requests
-        print("Handling POST request")
-        print(request.form)  # Print the form data for debugging
+    # if request.method == "POST":
+    #     # Handle customization options for POST requests
+    #     print("Handling POST request")
+    #     print(request.form)  # Print the form data for debugging
 
-        # Handle customization options for POST requests
-        if burial_type == "ordinary":
-            # Handle customization options for Ordinary Burial (caskets and tombstones)
-            wood_type = request.form.get("wood_type")
-            length = int(request.form.get("length"))
-            width = int(request.form.get("width"))
-            depth = int(request.form.get("depth"))
+    #     # Handle customization options for POST requests
+    #     if burial_type == "ordinary":
+    #         # Handle customization options for Ordinary Burial (caskets and tombstones)
+    #         wood_type = request.form.get("wood_type")
+    #         length = int(request.form.get("length"))
+    #         width = int(request.form.get("width"))
+    #         depth = int(request.form.get("depth"))
 
-            # Add the customized casket to the cart
-            new_casket = Casket(wood_type, length, width, depth)
-            caskets.append(new_casket)
-            cart.add_item(new_casket)
-
-
-            # Handle customization options for Tombstone
-            stone_type = request.form.get("stone_type")
-            engraving = request.form.get("engraving")
-            length_tombstone = int(request.form.get("tombstone_length"))
-            width_tombstone = int(request.form.get("tombstone_width"))
-            height_tombstone = int(request.form.get("tombstone_height"))
-
-            # Add the customized tombstone to the cart
-            new_tombstone = Tombstone(stone_type, engraving, length_tombstone, width_tombstone, height_tombstone)
-            tombstones.append(new_tombstone)
-            cart.add_item(new_tombstone)
+    #         # Add the customized casket to the cart
+    #         new_casket = Casket(wood_type, length, width, depth)
+    #         caskets.append(new_casket)
+    #         cart.add_item(new_casket)
 
 
-        elif burial_type == "cremation":
-            # Handle customization options for Cremation (urns)
-            volume = int(request.form.get("volume"))
-            kind = request.form.get("kind")
-            color = request.form.get("color")
+    #         # Handle customization options for Tombstone
+    #         stone_type = request.form.get("stone_type")
+    #         engraving = request.form.get("engraving")
+    #         length_tombstone = int(request.form.get("tombstone_length"))
+    #         width_tombstone = int(request.form.get("tombstone_width"))
+    #         height_tombstone = int(request.form.get("tombstone_height"))
 
-            # Add the customized urn to the cart
-            new_urn = Urn(volume, kind, color)
-            urns.append(new_urn)
-            cart.add_item(new_urn)
+    #         # Add the customized tombstone to the cart
+    #         new_tombstone = Tombstone(stone_type, engraving, length_tombstone, width_tombstone, height_tombstone)
+    #         tombstones.append(new_tombstone)
+    #         cart.add_item(new_tombstone)
 
-        session.setdefault("_flashes", []).append(("success", "Customization data saved successfully"))
 
-        # Redirect to the customization page with the burial type
-        return redirect(url_for("main.customize", burial_type=burial_type))
+    #     elif burial_type == "cremation":
+    #         # Handle customization options for Cremation (urns)
+    #         volume = int(request.form.get("volume"))
+    #         kind = request.form.get("kind")
+    #         color = request.form.get("color")
+
+    #         # Add the customized urn to the cart
+    #         new_urn = Urn(volume, kind, color)
+    #         urns.append(new_urn)
+    #         cart.add_item(new_urn)
+
+    #     session.setdefault("_flashes", []).append(("success", "Customization data saved successfully"))
+
+    #     # Redirect to the customization page with the burial type
+    #     return redirect(url_for("main.customize", burial_type=burial_type))
 
 
     # Render the customization page with burial type information and existing options
@@ -252,11 +303,54 @@ def cart_contents():
 main_blueprint.route("/cart", methods=["GET"])(cart_contents)
 
 
+import re
+from datetime import datetime
+
+def is_valid_card_number(card_number):
+    # Check if the card number is 16 digits
+    return re.match(r'^\d{16}$', card_number) is not None
+
+def is_valid_expiration_date(expiration_date):
+    try:
+        # Check if the expiration date is a valid date and not expired
+        expiration_date = datetime.strptime(expiration_date, '%m/%Y')
+        return expiration_date > datetime.now()
+    except ValueError:
+        return False
+
+def is_valid_cvv(cvv):
+    # Check if the CVV is 3 digits
+    return re.match(r'^\d{3}$', cvv) is not None
+
+def is_valid_cardholder_name(cardholder_name):
+    # Check if the cardholder name is a valid string
+    return bool(cardholder_name.strip())
+
 def payment():
     if request.method == "POST":
-        # Calculate the total price
-        total_price = cart.calculate_price()
-        return render_template("payment.html", total_price=total_price)
+        # Get form data
+        card_number = request.form.get("card_number")
+        expiration_date = request.form.get("expiration_date")
+        cvv = request.form.get("cvv")
+        cardholder_name = request.form.get("cardholder_name")
+
+        # Perform validation
+        if (
+            is_valid_card_number(card_number) and
+            is_valid_expiration_date(expiration_date) and
+            is_valid_cvv(cvv) and
+            is_valid_cardholder_name(cardholder_name)
+        ):
+            # Valid payment details, process payment
+            total_price = cart.calculate_price()
+            cart.clear()
+            flash("Valid payment, redirecting to home menu.")
+            return render_template("home.html")
+        else:
+            # Invalid payment details, show error message
+            flash("Invalid payment details. Please check your information and try again.", "error")
+
+    # Render the payment form
     return render_template("payment.html")
 
 main_blueprint.route("/payment", methods=["GET", "POST"])(payment)

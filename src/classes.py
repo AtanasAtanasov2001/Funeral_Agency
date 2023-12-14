@@ -51,7 +51,7 @@ class Urn:
         
     def display(self):
         color_display = self.color.capitalize() if self.color is not None else "N/A"
-        return f"Urn - Volume: {self.volume}, Material: {self.material}, Color: {color_display}"
+        return f"Urn - Material: {self.material}, Volume: {self.volume}, Color: {color_display}"
     
     def calculate_price(self):
         # Check if any of the attributes is None

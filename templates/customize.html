@@ -21,7 +21,7 @@
     <h1>Customize {{ burial_type }} Burial</h1>
 
     {% if burial_type == 'ordinary' %}
-        <form method="post" action="{{ url_for('main.customize', burial_type='ordinary') }}">
+        <form method="post" action="{{ url_for('main.add_to_cart', customize=True) }}">
             <input type="hidden" name="item_type" value="Casket">
             <h2>Choose Casket</h2>
             <label for="wood_type">Wood Type:</label>
@@ -40,7 +40,7 @@
         </form>
 
         
-        <form method="post" action="{{ url_for('main.customize', burial_type='ordinary') }}">
+        <form method="post" action="{{ url_for('main.add_to_cart', customize=True) }}">
             <input type="hidden" name="item_type" value="Tombstone">
             <h2>Choose Tombstone</h2>
             <label for="stone_type">Stone Type:</label>
@@ -62,7 +62,7 @@
 
     {% elif burial_type == 'cremation' %}
         <!-- Display customization options for Cremation (urns) -->
-        <form method="post" action="{{ url_for('main.customize', burial_type='cremation') }}">
+        <form method="post" action="{{ url_for('main.add_to_cart', customize=True) }}">
             <input type="hidden" name="item_type" value="Urn">
             <h2>Choose Urn</h2>
             <label for="volume">Volume:</label>
