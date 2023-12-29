@@ -52,8 +52,7 @@ jobs:
           projectBaseDir: .
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          EXTRA_ARGS: -X -Dsonar.projectKey=${{ secrets.SONAR_PROJECT_KEY }} -Dsonar.organization=${{ secrets.SONAR_ORG }}
-
+          EXTRA_ARGS: -X -Dsonar.projectKey="AtanasAtanasov2001_Funeral_Agency" -Dsonar.organization="atanasatanasov2001"
 
 
 
