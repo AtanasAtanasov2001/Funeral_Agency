@@ -46,13 +46,14 @@ jobs:
       - name: SonarCloud Scan
         uses: sonarsource/sonarcloud-github-action@master
         with:
-          entryPoint: /github/workspace/sonar-scanner
-          args: -Dsonar.organization=${{ secrets.SONAR_ORG }} -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+          organization: ${{ secrets.SONAR_ORG }}
+          token: ${{ secrets.SONAR_TOKEN }}
           projectBaseDir: .
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          EXTRA_ARGS: -Dsonar.projectKey=${{ secrets.SONAR_PROJECT_KEY }}
 
-          
+
       - name: Debug Output After SonarCloud Scan
         run: env
 
