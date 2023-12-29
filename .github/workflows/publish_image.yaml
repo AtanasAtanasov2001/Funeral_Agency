@@ -41,7 +41,7 @@ jobs:
           java-version: '11'
 
       - name: SonarCloud Scan
-        uses: sonarsource/sonarcloud-github-action@main
+        uses: sonarsource/sonarcloud-github-action@master
         with:
           organization: ${{ secrets.SONAR_ORG }}
           token: ${{ secrets.SONAR_TOKEN }}
