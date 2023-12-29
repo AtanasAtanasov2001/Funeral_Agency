@@ -26,6 +26,7 @@ jobs:
   Scan-With-Trivy:
     runs-on: ubuntu-latest
 
+    needs: [Build-Image]
     steps:
       - name: Checkout Code
         uses: actions/checkout@v2
