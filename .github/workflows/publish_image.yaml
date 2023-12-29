@@ -6,24 +6,11 @@ on:
       - main
 
 jobs:
-  build_and_deploy:
+
+  Scan-With-Trivy:
     runs-on: ubuntu-latest
     
-
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v2
-
-      - name: Login to Docker Hub
-        uses: docker/login-action@v3
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_PASSWORD }}
-
-      - name: Build Docker Image
-        run: docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/funeral_agency:latest .
-        working-directory: .
-
       - name: Install Trivy
         run: |
           wget https://github.com/aquasecurity/trivy/releases/download/v0.18.3/trivy_0.18.3_Linux-64bit.deb
@@ -39,14 +26,7 @@ jobs:
         with:
           distribution: 'adopt'
           java-version: '11'
-      - name: Checkout Code
-        uses: actions/checkout@v3
 
-      - name: Install flake8
-        run: pip install flake8
-
-      - name: Run flake8
-        uses: py-actions/flake8@v2
   Use-Flake8:
     runs-on: ubuntu-latest
 
@@ -65,7 +45,7 @@ jobs:
       - name: Run flake8
         uses: py-actions/flake8@v2
 
-        
+
   Use-MyPy:
     runs-on: ubuntu-latest
 
@@ -73,7 +53,7 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v4
         with:
-          python-version: 3.12.0
+          python-version: 3.10.0
 
       - name: Checkout Code
         uses: actions/checkout@v3
@@ -127,5 +107,24 @@ jobs:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         working-directory: .
 
+  Build and Deploy Image:
+    runs-on: ubuntu-latest
+    
+    needs: [Scan-With-Trivy, Scan-With-SonarCloud, Scan-With-Snyk]
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
+
+      - name: Build Docker Image
+        run: docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/funeral_agency:latest .
+        working-directory: .
+        
       - name: Push Docker Image to Docker Hub
         run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/funeral_agency:latest
