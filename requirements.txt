@@ -1,6 +1,7 @@
 blinker==1.7.0
 click==8.1.7
 cryptography==3.4.8
+Cython==0.29.24
 Flask==2.3.2
 greenlet==1.1.2
 httplib2==0.20.2
