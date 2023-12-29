@@ -16,12 +16,11 @@ jobs:
 
       - name: Login to Docker Hub
         run: |
-          echo '{"auths":{"https://index.docker.io/v1/":{"auth":"'"$(echo -n $DOCKERHUB_USERNAME:$DOCKERHUB_PASSWORD | base64)"'"}}}' > ~/docker_auth.json
-          docker login --auth < ~/docker_auth.json
+          echo "${DOCKERHUB_PASSWORD}" | docker login --username "${DOCKERHUB_USERNAME}" --password-stdin
         env:
           DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
           DOCKERHUB_PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}
-    
+
       - name: Build Docker Image
         run: docker build -t $DOCKERHUB_USERNAME/funeral_agency:latest .
         working-directory: .
