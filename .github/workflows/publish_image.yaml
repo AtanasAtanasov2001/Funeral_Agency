@@ -8,10 +8,14 @@ on:
 jobs:
   Build-Image:
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
+
+      - name: Build Docker Image
+        run: docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/funeral_agency:latest .
+        working-directory: .
 
       - name: Login to Docker Hub
         uses: docker/login-action@v3
@@ -19,17 +23,13 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
 
-      - name: Build Docker Image
-        run: docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/funeral_agency:latest .
-        working-directory: .
+      - name: Push Docker Image
+        run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/funeral_agency:latest
 
       - name: Install Trivy
         run: |
           wget https://github.com/aquasecurity/trivy/releases/download/v0.18.3/trivy_0.18.3_Linux-64bit.deb
           sudo dpkg -i trivy_0.18.3_Linux-64bit.deb
-
-      - name: Authenticate with Docker Registry
-        run: docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Trivy Scan
         run: trivy image ${{ secrets.DOCKERHUB_USERNAME }}/funeral_agency:latest
@@ -90,14 +90,3 @@ jobs:
         run: snyk test --file=requirements.txt
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-
-
-  Deploy-image:
-    name: Deploy image to DockerHub
-    
-    runs-on: ubuntu-latest
-    needs: [Build-Image, Scan-With-SonarCloud, Scan-With-Snyk]
-    
-    steps:
-      - name: Push Docker Image to Docker Hub
-        run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/funeral_agency:latest
