@@ -31,7 +31,7 @@ jobs:
         working-directory: .
 
       - name: Trivy Scan
-        run: trivy $DOCKERHUB_USERNAME/funeral_agency:latest
+        run: trivy ${{ secrets.DOCKERHUB_USERNAME }}/funeral_agency:latest
         working-directory: .
 
       - name: Install SonarScanner
