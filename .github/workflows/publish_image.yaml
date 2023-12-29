@@ -47,7 +47,7 @@ jobs:
       - name: SonarCloud Scan
         uses: sonarsource/sonarcloud-github-action@master
         with:
-          organization: ${{ secrets.SONAR_ORG }}
+          organization: "atanasatanasov2001"
           token: ${{ secrets.SONAR_TOKEN }}
           projectBaseDir: .
         env:
