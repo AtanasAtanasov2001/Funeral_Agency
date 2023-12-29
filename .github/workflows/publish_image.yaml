@@ -9,11 +9,6 @@ jobs:
   Build-Image:
     runs-on: ubuntu-latest
 
-    services:
-      trivy:
-        image: aquasec/trivy:latest
-        command: ["sleep", "infinity"]
-
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
@@ -31,6 +26,11 @@ jobs:
       - name: Push Docker Image
         run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/funeral_agency:latest
 
+  Scan-With-Trivy:
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
       - name: Install Trivy
         run: |
           wget https://github.com/aquasecurity/trivy/releases/download/v0.18.3/trivy_0.18.3_Linux-64bit.deb
@@ -41,7 +41,7 @@ jobs:
 
       - name: Check Trivy Results
         run: |
-          trivy_exit_code=$(docker inspect -f '{{ .State.ExitCode }}' trivy)
+          trivy_exit_code=$?
           if [ "$trivy_exit_code" -ne 0 ]; then
             echo "Trivy found vulnerabilities. Exiting with code $trivy_exit_code."
             exit $trivy_exit_code
