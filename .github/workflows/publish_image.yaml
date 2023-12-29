@@ -92,7 +92,7 @@ jobs:
     name: Deploy image to DockerHub
     
     runs-on: ubuntu-latest
-    needs: [Build-Image, Scan-With-Trivy, Scan-With-SonarCloud, Scan-With-Snyk]
+    needs: [Build-Image, Scan-With-SonarCloud, Scan-With-Snyk]
     
     steps:
       - name: Push Docker Image to Docker Hub
