@@ -1,5 +1,6 @@
 #!/bin/bash
 
+
 green='\033[0;32m'
 red='\033[0;31m'
 nc='\033[0m'
@@ -9,6 +10,7 @@ if [ -z "$1" ]; then
     echo "A name for the virtual environment is needed. Aborting..."
     exit 1
 fi
+
 venv_name="$1"
 
 # Check if the virtual environment already exists
@@ -49,8 +51,6 @@ done
 # Create the virtual environment
 python3 -m venv "$venv_name"
 
-# Activate the virtual environment
-source "$venv_name/bin/activate"
 
 # Install packages from requirements.txt
 if [ -f "requirements.txt" ]; then
@@ -72,6 +72,5 @@ curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-
 chmod +x minikube-linux-amd64
 mv minikube-linux-amd64 $venv_name/bin/minikube
 
-# deactivate
 
 echo "Virtual environment '$venv_name' created and activated. You can deactivate it using 'deactivate'."

@@ -6,6 +6,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Default Choices</title>
+    <link rel="stylesheet" type="text/css" href="../style/default_contents.css">
+
 </head>
 
 <body>
@@ -20,14 +22,27 @@
         </ul>
         <form method="post" action="{{ url_for('main.add_to_cart') }}">
             <input type="hidden" name="burial_type" value="{{ burial_type }}">
+            <input type="hidden" name="customize" value="False">
+        
+            <!-- Add a hidden input field for the selected item's display string -->
+            <input type="hidden" name="item_type" id="selected_item" value="">
+        
             <label for="item_type">Select {{ item_type }}:</label>
-            <select id="item_type" name="item_type" required>
+            <select id="item_type_dropdown" name="item_type_dropdown" required>
                 {% for item in default_choices %}
                     <option value="{{ item.display() }}">{{ item.display() }}</option>
                 {% endfor %}
             </select>
+        
+            <script>
+                document.getElementById("item_type_dropdown").addEventListener("change", function() {
+                    document.getElementById("selected_item").value = this.value;
+                });
+            </script>
+        
             <button type="submit">Add to Cart</button>
         </form>
+        
         <a href="{{ url_for('main.customize', burial_type=burial_type) }}">Customize</a>
     {% else %}
         <p>No default choices available.</p>
