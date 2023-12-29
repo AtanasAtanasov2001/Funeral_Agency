@@ -54,7 +54,8 @@ jobs:
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@master
         with:
-        args: >
+          sonar-scanner-version: '4.6.2.2472'
+        args:
           -Dsonar.projectKey="AtanasAtanasov2001_Funeral_Agency"
           -Dsonar.organization="atanasatanasov2001"
         env:
