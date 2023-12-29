@@ -43,7 +43,7 @@ jobs:
       - name: Debug Output Before SonarCloud Scan
         run: env
 
-        
+
       - name: SonarCloud Scan
         uses: sonarsource/sonarcloud-github-action@master
         with:
@@ -52,7 +52,8 @@ jobs:
           projectBaseDir: .
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          EXTRA_ARGS: -Dsonar.projectKey=${{ secrets.SONAR_PROJECT_KEY }} -Dsonar.organization=${{ secrets.SONAR_ORG }}
+          EXTRA_ARGS: -X -Dsonar.projectKey=${{ secrets.SONAR_PROJECT_KEY }} -Dsonar.organization=${{ secrets.SONAR_ORG }}
+
 
 
 
