@@ -85,7 +85,7 @@ jobs:
         with:
           path: "."
 
-  Scan-With-Snyk:
+  Scan With Snyk:
     name: Scan with Snyk
     runs-on: ubuntu-latest
 
