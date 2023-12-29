@@ -1,7 +1,6 @@
 blinker==1.7.0
 click==8.1.7
 cryptography==3.4.8
-Cython==0.29.24
 Flask==2.3.2
 greenlet==1.1.2
 httplib2==0.20.2
@@ -20,6 +19,6 @@ netifaces==0.11.0
 oauthlib==3.2.0
 pynvim==0.4.2
 pyparsing==2.4.7
-PyYAML==5.4.1
+PyYAML
 Werkzeug==3.0.1
 zipp==1.0.0
