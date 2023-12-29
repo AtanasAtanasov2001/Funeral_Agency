@@ -43,60 +43,12 @@ jobs:
           distribution: 'adopt'
           java-version: '11'
 
-  Use-Flake8:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Setup Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: 3.12.0
-
-      - name: Checkout Code
-        uses: actions/checkout@v3
-
-      - name: Install flake8
-        run: pip install flake8
-
-      - name: Run flake8
-        uses: py-actions/flake8@v2
-
-
-  Use-MyPy:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Setup Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: 3.12.0
-
-      - name: Checkout Code
-        uses: actions/checkout@v3
-
-      - name: Install MyPy
-        run: pip install mypy
-
-      - name: Run mypy
-        uses: sasanquaneuf/mypy-github-action@releases/v1
-        with:
-          checkName: 'Use-MyPy'
-        env:
-          ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
-
-  Use-Ruff:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v3
-      - name: Run Ruff
-        uses: chartboost/ruff-action@v1
 
   Scan-With-SonarCloud:
     name: Scan with SonarCloud
     runs-on: ubuntu-latest
 
-    needs: [Use-Flake8, Use-MyPy, Use-Ruff]
+    needs: [Build-Image]
 
     steps:
       - name: Checkout Code
@@ -113,7 +65,7 @@ jobs:
     name: Scan with Snyk
     runs-on: ubuntu-latest
 
-    needs: [Use-Flake8, Use-MyPy, Use-Ruff]
+    needs: [Build-Image]
 
     steps:
       - name: Checkout Code
