@@ -39,19 +39,18 @@ jobs:
         with:
           distribution: 'adopt'
           java-version: '11'
-          
-      - name: Debug Output
-        run: |
-          echo "SONAR_ORG=${{ secrets.SONAR_ORG }}"
-          echo "SONAR_TOKEN=${{ secrets.SONAR_TOKEN }}"
-          
 
-
+      - name: Debug Output Before SonarCloud Scan
+        run: env
+      
       - name: SonarCloud Scan
         uses: sonarsource/sonarcloud-github-action@master
-        env:
+        with:
           organization: ${{ secrets.SONAR_ORG }}
           token: ${{ secrets.SONAR_TOKEN }}
+      
+      - name: Debug Output After SonarCloud Scan
+        run: env
 
       - name: Install Snyk
         run: npm install -g snyk
