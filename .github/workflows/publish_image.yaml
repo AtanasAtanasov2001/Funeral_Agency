@@ -23,12 +23,16 @@ jobs:
         run: docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/funeral_agency:latest .
         working-directory: .
 
-      - name: Trivy Scan
+      - name: Install Trivy
         run: |
-          docker run --rm -v $(pwd):/workdir aquasec/trivy:latest image ${{ secrets.DOCKERHUB_USERNAME }}/funeral_agency:latest
-        env:
-          DOCKERCLOUD_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
-          DOCKERCLOUD_PASSWORD: ${{ secrets.DOCKERHUB_TOKEN }}
+          wget https://github.com/aquasecurity/trivy/releases/download/v0.18.3/trivy_0.18.3_Linux-64bit.deb
+          sudo dpkg -i trivy_0.18.3_Linux-64bit.deb
+
+      - name: Authenticate with Docker Registry
+        run: echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
+
+      - name: Trivy Scan
+        run: trivy image ${{ secrets.DOCKERHUB_USERNAME }}/funeral_agency:latest
 
       - name: Check Trivy Results
         run: |
