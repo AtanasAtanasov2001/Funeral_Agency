@@ -10,6 +10,8 @@ COPY . /app
 RUN apt-get update \
     && apt-get install -y build-essential
 
+RUN rm -rf /var/lib/apt/lists/* /root/.cache
+
 # Install any needed packages specified in requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
 
