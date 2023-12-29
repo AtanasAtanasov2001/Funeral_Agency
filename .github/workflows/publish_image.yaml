@@ -42,12 +42,13 @@ jobs:
 
       - name: Debug Output Before SonarCloud Scan
         run: env
-      
+
       - name: SonarCloud Scan
         uses: sonarsource/sonarcloud-github-action@master
         with:
-          organization: ${{ secrets.SONAR_ORG }}
-          token: ${{ secrets.SONAR_TOKEN }}
+          entryPoint: /github/workspace/sonar-scanner
+          args: -Dsonar.organization=${{ secrets.SONAR_ORG }} -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+          projectBaseDir: .
       
       - name: Debug Output After SonarCloud Scan
         run: env
