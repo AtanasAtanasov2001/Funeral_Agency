@@ -72,14 +72,12 @@ jobs:
 
   Use-Ruff:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
-        
       - name: Run Ruff
         uses: chartboost/ruff-action@v1
-  # Static security code analysis
+
   Scan-With-SonarCloud:
     name: Scan with SonarCloud
     runs-on: ubuntu-latest
@@ -97,7 +95,11 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONARCLOUD_TOKEN }}
 
 
-
+  Scan-With-Snyk:
+    name: Scan with Snyk
+    runs-on: ubuntu-latest
+    
+    steps:
       - name: Install Snyk
         run: npm install -g snyk
 
