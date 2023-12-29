@@ -40,18 +40,11 @@ jobs:
           distribution: 'adopt'
           java-version: '11'
 
-      - name: Install SonarScanner
-        run: |
-          curl -o sonar-scanner-cli.zip -L https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.6.2.2472-linux.zip
-          unzip sonar-scanner-cli.zip
-          chmod +x sonar-scanner-4.6.2.2472-linux/bin/sonar-scanner
-          export PATH=$PWD/sonar-scanner-4.6.2.2472-linux/bin:$PATH
-        working-directory: .
-
       - name: SonarCloud Scan
-        run: sonar-scanner
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        uses: sonarsource/sonarcloud-github-action@v1
+        with:
+          organization: ${{ secrets.SONAR_ORG }}
+          token: ${{ secrets.SONAR_TOKEN }}
 
       - name: Install Snyk
         run: npm install -g snyk
