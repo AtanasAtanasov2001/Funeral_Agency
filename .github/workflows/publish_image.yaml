@@ -9,6 +9,11 @@ jobs:
   Build-Image:
     runs-on: ubuntu-latest
 
+    services:
+      trivy:
+        image: aquasec/trivy:latest
+        command: ["sleep", "infinity"]
+
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
