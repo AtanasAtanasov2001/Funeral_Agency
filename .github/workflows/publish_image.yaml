@@ -34,7 +34,7 @@ jobs:
       - name: Trivy Scan
         uses: docker://aquasec/trivy:latest
         with:
-          args: ${{ secrets.DOCKERHUB_USERNAME }}/funeral_agency:latest
+          args: --exit-code 1 ${{ secrets.DOCKERHUB_USERNAME }}/funeral_agency:latest
         env:
           DOCKERCLOUD_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
           DOCKERCLOUD_PASSWORD: ${{ secrets.DOCKERHUB_TOKEN }}
@@ -55,9 +55,7 @@ jobs:
         uses: SonarSource/sonarcloud-github-action@master
         with:
           sonar-scanner-version: '4.6.2.2472'
-          extra-args:
-            -Dsonar.projectKey="AtanasAtanasov2001_Funeral_Agency"
-            -Dsonar.organization="atanasatanasov2001"
+          extra-args: '-Dsonar.projectKey=AtanasAtanasov2001_Funeral_Agency -Dsonar.organization=atanasatanasov2001'
         env:
           GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
