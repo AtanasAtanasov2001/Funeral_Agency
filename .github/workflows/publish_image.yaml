@@ -107,7 +107,7 @@ jobs:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         working-directory: .
 
-  Build and Deploy Image:
+  Build-and-Deploy-Image:
     runs-on: ubuntu-latest
     
     needs: [Scan-With-Trivy, Scan-With-SonarCloud, Scan-With-Snyk]
@@ -125,6 +125,6 @@ jobs:
       - name: Build Docker Image
         run: docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/funeral_agency:latest .
         working-directory: .
-        
+
       - name: Push Docker Image to Docker Hub
         run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/funeral_agency:latest
