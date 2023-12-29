@@ -49,7 +49,10 @@ jobs:
           entryPoint: /github/workspace/sonar-scanner
           args: -Dsonar.organization=${{ secrets.SONAR_ORG }} -Dsonar.login=${{ secrets.SONAR_TOKEN }}
           projectBaseDir: .
-      
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+          
       - name: Debug Output After SonarCloud Scan
         run: env
 
