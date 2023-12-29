@@ -1,0 +1,61 @@
+name: Docker Image Deployment
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build_and_deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build Docker Image
+        run: docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/funeral_agency:latest .
+        working-directory: .
+
+      - name: Install Trivy
+        run: |
+          wget https://github.com/aquasecurity/trivy/releases/download/v0.18.3/trivy_0.18.3_Linux-64bit.deb
+          sudo dpkg -i trivy_0.18.3_Linux-64bit.deb
+        working-directory: .
+
+      - name: Trivy Scan
+        run: trivy ${{ secrets.DOCKERHUB_USERNAME }}/funeral_agency:latest
+        working-directory: .
+
+      - name: Install SonarScanner
+        run: |
+          sudo apt-get update -qy
+          sudo apt-get install -y openjdk-11-jdk
+          curl -o sonar-scanner-cli.zip -L https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.6.2.2472-linux.zip
+          unzip sonar-scanner-cli.zip
+          export PATH=$PWD/sonar-scanner-4.6.2.2472-linux/bin:$PATH
+        working-directory: .
+
+      - name: SonarCloud Scan
+        run: sonar-scanner
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        working-directory: .
+
+      - name: Install Snyk
+        run: npm install -g snyk
+
+      - name: Snyk Scan
+        run: snyk test --all-projects
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        working-directory: .
+
+      - name: Push Docker Image to Docker Hub
+        run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/funeral_agency:latest

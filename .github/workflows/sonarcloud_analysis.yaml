@@ -1,0 +1,24 @@
+name: SonarCloud Analysis
+
+on:
+  pull_request:
+    types:
+      - opened
+      - synchronize
+
+jobs:
+  sonarcloud:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+
+      - name: SonarCloud Scan
+        run: |
+          ./gradlew sonarqube \
+            -Dsonar.organization=AtanasAtanasov2001 \
+            -Dsonar.projectKey=atanasatanasov2001 \
+            -Dsonar.host.url=https://sonarcloud.io \
+            -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+        working-directory: .

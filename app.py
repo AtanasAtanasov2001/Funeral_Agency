@@ -10,4 +10,4 @@ if __name__ == "__main__":
     from src.routes import main_blueprint
 
     app.register_blueprint(main_blueprint)
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=5000, debug=True)
