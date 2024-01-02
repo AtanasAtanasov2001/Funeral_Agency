@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: Funeral_Agency_Deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: Funeral_Agency
+  template:
+    metadata:
+      labels:
+        app: Funeral_Agency
+    spec:
+      containers:
+      - name: funeral_agency
+        image: ahilottroya/funeral_agency:latest
+        ports:
+        - containerPort: 5000
