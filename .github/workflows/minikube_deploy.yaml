@@ -28,11 +28,11 @@ jobs:
           tar zxvf crictl-${CRI_TOOLS_VERSION}-linux-amd64.tar.gz
           mv crictl /usr/local/bin/
 
-
+  # //https://github.com/Mirantis/cri-dockerd/releases/download/v0.3.8/cri-dockerd-0.3.8.arm64.tgz
       - name: Install cri-dockerd
         run: |
           CRI_DOCKERD_VERSION="0.3.8"
-          curl -LO https://github.com/Mirantis/cri-dockerd/releases/tag/v${CRI_DOCKERD_VERSION}/cri-dockerd_${CRI_DOCKERD_VERSION}.amd64.tgz
+          curl -LO https://github.com/Mirantis/cri-dockerd/releases/download/v${CRI_DOCKERD_VERSION}/cri-dockerd_${CRI_DOCKERD_VERSION}.amd64.tgz
           ls -lh cri-dockerd_${CRI_DOCKERD_VERSION}.amd64.tgz
           file cri-dockerd_${CRI_DOCKERD_VERSION}.amd64.tgz
           tar -tvf cri-dockerd_${CRI_DOCKERD_VERSION}.amd64.tgz
@@ -40,6 +40,7 @@ jobs:
           sudo sh install_cri_dockerd.sh
           sudo systemctl start cri-dockerd
           sudo systemctl enable cri-dockerd
+
           
 
       - name: Start Minikube
