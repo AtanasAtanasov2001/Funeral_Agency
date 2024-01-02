@@ -15,10 +15,17 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v2
 
-      - name: Install conntrack and crictl
+      - name: Install conntrack
         run: |
           sudo apt update
-          sudo apt install conntrack cri-tools
+          sudo apt install -y conntrack
+
+      - name: Install cri-tools
+        run: |
+          CRI_TOOLS_VERSION="1.21.0"
+          wget https://github.com/kubernetes-sigs/cri-tools/releases/download/v${CRI_TOOLS_VERSION}/crictl-${CRI_TOOLS_VERSION}-linux-amd64.tar.gz
+          tar zxvf crictl-${CRI_TOOLS_VERSION}-linux-amd64.tar.gz
+          sudo mv crictl /usr/local/bin/
 
       - name: Start Minikube
         id: minikube
