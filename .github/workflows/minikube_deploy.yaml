@@ -1,27 +1,38 @@
 name: Deploy to Minikube
 
+
 on:
-  push:
-    branches:
-      - main
+  workflow_run:
+    workflows: ["Docker Image Build and Push"]
+    types:
+      - completed
 
 jobs:
-  deploy:
+  setup-minikube:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout Code
         uses: actions/checkout@v2
 
-      - name: Install conntrack
+      - name: Install conntrack and crictl
         run: |
           sudo apt update
-          sudo apt install conntrack
-          
+          sudo apt install conntrack cri-tools
+
       - name: Start Minikube
+        id: minikube
         run: |
           minikube start --vm-driver=none
           kubectl config use-context minikube
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: setup-minikube
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
 
       - name: Pull Docker Image from Docker Hub
         run: |
