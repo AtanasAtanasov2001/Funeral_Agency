@@ -22,11 +22,11 @@ jobs:
 
       - name: Install cri-tools
         run: |
-          CRI_TOOLS_VERSION="1.21.0"
-          wget https://github.com/kubernetes-sigs/cri-tools/releases/download/v${CRI_TOOLS_VERSION}/crictl-${CRI_TOOLS_VERSION}-linux-amd64.tar.gz
+          CRI_TOOLS_VERSION=$(curl -s https://api.github.com/repos/kubernetes-sigs/cri-tools/releases/latest | jq -r .tag_name)
+          wget https://github.com/kubernetes-sigs/cri-tools/releases/download/${CRI_TOOLS_VERSION}/crictl-${CRI_TOOLS_VERSION}-linux-amd64.tar.gz
           tar zxvf crictl-${CRI_TOOLS_VERSION}-linux-amd64.tar.gz
           sudo mv crictl /usr/local/bin/
-
+          
       - name: Start Minikube
         id: minikube
         run: |
