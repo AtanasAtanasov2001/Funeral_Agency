@@ -13,6 +13,11 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v2
 
+      - name: Install conntrack
+        run: |
+          sudo apt update
+          sudo apt install conntrack
+          
       - name: Start Minikube
         run: |
           minikube start --vm-driver=none
