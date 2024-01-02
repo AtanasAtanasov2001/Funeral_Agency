@@ -33,7 +33,7 @@ jobs:
         run: |
           CRI_DOCKERD_VERSION="0.3.8"
           CRI_DOCKERD_VERSION_IMAGE="0.3.8.3-0"
-          wget https://github.com/Mirantis/cri-dockerd/releases/tag/v${CRI_DOCKERD_VERSION}/cri-dockerd_${CRI_DOCKERD_VERSION_IMAGE}.amd64.tgz
+          curl -LO https://github.com/Mirantis/cri-dockerd/releases/tag/v${CRI_DOCKERD_VERSION}/cri-dockerd_${CRI_DOCKERD_VERSION_IMAGE}.amd64.tgz
           tar -xf cri-dockerd_${CRI_DOCKERD_VERSION_IMAGE}.amd64.tgz
           sudo sh install_cri_dockerd.sh
           sudo systemctl start cri-dockerd
