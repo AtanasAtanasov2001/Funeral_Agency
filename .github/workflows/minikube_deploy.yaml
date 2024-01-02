@@ -34,9 +34,15 @@ jobs:
     - name: Wait for Deployment
       run: |
         kubectl rollout status deployment/funeral-agency-deployment
+
     - name: Expose Service
       run: |
-        minikube service funeral-agency-node-port
+
+        minikube service list
+        minikube service funeral-agency-node-port --url
+        echo "------------------opening the service------------------"
+        curl $(minikube service funeral-agency-node-port --url)  
+        
     - name: Stop Minikube
       run: | 
         minikube stop
