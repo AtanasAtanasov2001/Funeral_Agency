@@ -20,18 +20,23 @@ jobs:
           sudo apt update
           sudo apt install -y conntrack
 
-      - name: Install cri-dockerd
-        run: |
-          CRI_DOCKERD_VERSION=$(curl -s https://api.github.com/repos/Mirantis/cri-dockerd/releases/latest | jq -r .tag_name)
-          wget -O /usr/local/bin/cri-dockerd https://github.com/Mirantis/cri-dockerd/releases/latest/download/cri-dockerd
-          chmod +x /usr/local/bin/cri-dockerd
-          
+
       - name: Install cri-tools
         run: |
           CRI_TOOLS_VERSION=$(curl -s https://api.github.com/repos/kubernetes-sigs/cri-tools/releases/latest | jq -r .tag_name)
           wget https://github.com/kubernetes-sigs/cri-tools/releases/download/${CRI_TOOLS_VERSION}/crictl-${CRI_TOOLS_VERSION}-linux-amd64.tar.gz
           tar zxvf crictl-${CRI_TOOLS_VERSION}-linux-amd64.tar.gz
-          sudo mv crictl /usr/local/bin/
+          mv crictl /usr/local/bin/
+
+
+      - name: Install cri-dockerd
+        run: |
+          CRI_DOCKERD_VERSION="0.3.8.3-0"
+          wget https://github.com/Mirantis/cri-dockerd/releases/download/${CRI_DOCKERD_VERSION}/cri-dockerd_${CRI_DOCKERD_VERSION}.ubuntu-jammy_amd64.deb
+          dpkg -i cri-dockerd_${CRI_DOCKERD_VERSION}.ubuntu-jammy_amd64.deb
+          systemctl start cri-dockerd
+          systemctl enable cri-dockerd
+          
 
       - name: Start Minikube
         id: minikube
