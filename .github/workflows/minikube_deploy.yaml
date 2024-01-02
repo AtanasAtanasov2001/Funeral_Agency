@@ -8,63 +8,31 @@ on:
       - completed
 
 jobs:
-  setup-minikube:
+name: CI
+on:
+  - pull_request
+jobs:
+  job1:
     runs-on: ubuntu-latest
-
+    name: build example and deploy to minikube
     steps:
-      - name: Checkout Code
-        uses: actions/checkout@v3
+    - uses: actions/checkout@v3
 
-      - name: Install conntrack
-        run: |
-          sudo apt update
-          sudo apt install -y conntrack
+    - name: Start minikube
+      uses: medyagh/setup-minikube@master
 
+    - name: Try the cluster !
+      run: kubectl get pods -A
 
-      - name: Install cri-tools
-        run: |
-          CRI_TOOLS_VERSION=$(curl -s https://api.github.com/repos/kubernetes-sigs/cri-tools/releases/latest | jq -r .tag_name)
-          wget https://github.com/kubernetes-sigs/cri-tools/releases/download/${CRI_TOOLS_VERSION}/crictl-${CRI_TOOLS_VERSION}-linux-amd64.tar.gz
-          tar zxvf crictl-${CRI_TOOLS_VERSION}-linux-amd64.tar.gz
-          mv crictl /usr/local/bin/
-
-  # # //https://github.com/Mirantis/cri-dockerd/releases/download/v0.3.8/cri-dockerd-0.3.8.arm64.tgz
-      - name: Install cri-dockerd
-        run: |
-          CRI_DOCKERD_VERSION="0.3.8"
-          wget https://github.com/Mirantis/cri-dockerd/releases/download/v${CRI_DOCKERD_VERSION}/cri-dockerd_${CRI_DOCKERD_VERSION}.amd64.tgz
-          ls -lh cri-dockerd_${CRI_DOCKERD_VERSION}.amd64.tgz
-          file cri-dockerd_${CRI_DOCKERD_VERSION}.amd64.tgz
-          tar -tvf cri-dockerd_${CRI_DOCKERD_VERSION}.amd64.tgz
-          tar -xf cri-dockerd_${CRI_DOCKERD_VERSION}.amd64.tgz
-          sudo sh install_cri_dockerd.sh
-          sudo systemctl start cri-dockerd
-          sudo systemctl enable cri-dockerd
-
-          
-
-      - name: Start Minikube
-        id: minikube
-        run: |
-          minikube start --vm-driver=none
-          kubectl config use-context minikube
-
-  deploy:
-    runs-on: ubuntu-latest
-    needs: setup-minikube
-
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v3
-
-      - name: Pull Docker Image from Docker Hub
+    - name: Pull Docker Image from Docker Hub
         run: |
           docker pull ${{ secrets.DOCKERHUB_USERNAME }}/funeral_agency:latest
           docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_PASSWORD }}
 
-      - name: Deploy to Minikube
-        run: |
-          kubectl apply -f k8s_manifests/
+
+    - name: Deploy to minikube
+      run:
+        kubectl apply -f k8s_manifests/
 
       - name: Wait for Deployment
         run: |
@@ -75,4 +43,6 @@ jobs:
           minikube service Funeral_Agency_Node_Port
 
       - name: Stop Minikube
-        run: minikube stop
+        run: | 
+          minikube stop
+
