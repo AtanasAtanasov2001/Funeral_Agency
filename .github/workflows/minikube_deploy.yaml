@@ -8,11 +8,7 @@ on:
       - completed
 
 jobs:
-name: CI
-on:
-  - pull_request
-jobs:
-  job1:
+  Deploy-To-Minikube:
     runs-on: ubuntu-latest
     name: build example and deploy to minikube
     steps:
@@ -28,7 +24,6 @@ jobs:
       run: |
         docker pull ${{ secrets.DOCKERHUB_USERNAME }}/funeral_agency:latest
         docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_PASSWORD }}
-
 
     - name: Deploy to minikube
       run:
