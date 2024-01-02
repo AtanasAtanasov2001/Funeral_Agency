@@ -9,8 +9,10 @@ on:
 
 jobs:
   Deploy-To-Minikube:
+
     runs-on: ubuntu-latest
     name: build example and deploy to minikube
+
     steps:
     - uses: actions/checkout@v3
 
@@ -29,15 +31,13 @@ jobs:
       run:
         kubectl apply -f k8s_manifests/
 
-      - name: Wait for Deployment
-        run: |
-          kubectl rollout status deployment/Funeral_Agency_Deployment
-
-      - name: Expose Service
-        run: |
-          minikube service Funeral_Agency_Node_Port
-
-      - name: Stop Minikube
-        run: | 
-          minikube stop
+    - name: Wait for Deployment
+      run: |
+        kubectl rollout status deployment/Funeral_Agency_Deployment
+    - name: Expose Service
+      run: |
+        minikube service Funeral_Agency_Node_Port
+    - name: Stop Minikube
+      run: | 
+        minikube stop
 
