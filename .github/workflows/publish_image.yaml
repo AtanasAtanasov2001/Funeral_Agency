@@ -27,6 +27,7 @@ jobs:
         run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/funeral_agency:latest
 
   Scan-With-Trivy:
+    name: Scan on Trivy
     runs-on: ubuntu-latest
     needs: Build-Image
 
