@@ -33,10 +33,10 @@ jobs:
 
     - name: Wait for Deployment
       run: |
-        kubectl rollout status deployment/Funeral_Agency_Deployment
+        kubectl rollout status deployment/funeral-agency-deployment
     - name: Expose Service
       run: |
-        minikube service Funeral_Agency_Node_Port
+        minikube service funeral-agency-node-port
     - name: Stop Minikube
       run: | 
         minikube stop
