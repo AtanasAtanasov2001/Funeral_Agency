@@ -11,7 +11,7 @@ jobs:
   Deploy-To-Minikube:
 
     runs-on: ubuntu-latest
-    name: build example and deploy to minikube
+    name: Deploy Image to minikube
 
     steps:
     - uses: actions/checkout@v3

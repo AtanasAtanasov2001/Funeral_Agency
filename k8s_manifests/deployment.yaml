@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: Funeral_Agency_Deployment
+  name: funeral-agency-deployment
 spec:
   replicas: 3
   selector:
@@ -17,3 +17,4 @@ spec:
         image: ahilottroya/funeral_agency:latest
         ports:
         - containerPort: 5000
+        
