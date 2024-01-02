@@ -32,7 +32,7 @@ jobs:
       - name: Install cri-dockerd
         run: |
           CRI_DOCKERD_VERSION="0.3.8.3-0"
-          wget https://github.com/Mirantis/cri-dockerd/releases/download/${CRI_DOCKERD_VERSION}/cri-dockerd_${CRI_DOCKERD_VERSION}.ubuntu-jammy_amd64.deb
+          wget https://github.com/Mirantis/cri-dockerd/releases/download/cri-dockerd_${CRI_DOCKERD_VERSION}.ubuntu-jammy_amd64.deb
           dpkg -i cri-dockerd_${CRI_DOCKERD_VERSION}.ubuntu-jammy_amd64.deb
           systemctl start cri-dockerd
           systemctl enable cri-dockerd
