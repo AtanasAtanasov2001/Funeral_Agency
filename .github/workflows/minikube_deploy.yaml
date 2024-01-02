@@ -32,7 +32,7 @@ jobs:
       - name: Install cri-dockerd
         run: |
           CRI_DOCKERD_VERSION="0.3.8"
-          curl -LO https://github.com/Mirantis/cri-dockerd/releases/download/v${CRI_DOCKERD_VERSION}/cri-dockerd_${CRI_DOCKERD_VERSION}.amd64.tgz
+          wget https://github.com/Mirantis/cri-dockerd/releases/download/v${CRI_DOCKERD_VERSION}/cri-dockerd_${CRI_DOCKERD_VERSION}.amd64.tgz
           ls -lh cri-dockerd_${CRI_DOCKERD_VERSION}.amd64.tgz
           file cri-dockerd_${CRI_DOCKERD_VERSION}.amd64.tgz
           tar -tvf cri-dockerd_${CRI_DOCKERD_VERSION}.amd64.tgz
