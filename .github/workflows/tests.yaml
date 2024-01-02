@@ -1,0 +1,31 @@
+name: Tests
+
+on:
+  pull_request:
+    branches: master
+
+jobs:
+  tests:
+    name: Execute tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.12
+
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements-dev.txt
+
+      - name: Execute tests
+        run: pytest --junitxml=pytest.xml --cov-report=term-missing:skip-covered  --cov=src/api src/api/tests/ | tee pytest-coverage.txt
+
+      - name: Pytest coverage comment
+        uses: MishaKav/pytest-coverage-comment@main
+        with:
+          pytest-coverage-path: ./pytest-coverage.txt
+          junitxml-path: ./pytest.xml
