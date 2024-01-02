@@ -13,7 +13,7 @@ jobs:
 
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Install conntrack
         run: |
@@ -28,7 +28,7 @@ jobs:
           tar zxvf crictl-${CRI_TOOLS_VERSION}-linux-amd64.tar.gz
           mv crictl /usr/local/bin/
 
-  # //https://github.com/Mirantis/cri-dockerd/releases/download/v0.3.8/cri-dockerd-0.3.8.arm64.tgz
+  # # //https://github.com/Mirantis/cri-dockerd/releases/download/v0.3.8/cri-dockerd-0.3.8.arm64.tgz
       - name: Install cri-dockerd
         run: |
           CRI_DOCKERD_VERSION="0.3.8"
@@ -55,7 +55,7 @@ jobs:
 
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Pull Docker Image from Docker Hub
         run: |
