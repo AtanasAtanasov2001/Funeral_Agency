@@ -25,9 +25,9 @@ jobs:
       run: kubectl get pods -A
 
     - name: Pull Docker Image from Docker Hub
-        run: |
-          docker pull ${{ secrets.DOCKERHUB_USERNAME }}/funeral_agency:latest
-          docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_PASSWORD }}
+      run: |
+        docker pull ${{ secrets.DOCKERHUB_USERNAME }}/funeral_agency:latest
+        docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_PASSWORD }}
 
 
     - name: Deploy to minikube
