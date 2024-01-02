@@ -22,8 +22,7 @@ jobs:
 
       - name: Install cri-dockerd
         run: |
-          # Install cri-dockerd based on the instructions provided in the GitHub repository
-          # https://github.com/Mirantis/cri-dockerd
+          CRI_DOCKERD_VERSION=$(curl -s https://api.github.com/repos/Mirantis/cri-dockerd/releases/latest | jq -r .tag_name)
           wget -O /usr/local/bin/cri-dockerd https://github.com/Mirantis/cri-dockerd/releases/latest/download/cri-dockerd
           chmod +x /usr/local/bin/cri-dockerd
           
