@@ -58,17 +58,52 @@ That is used by utilized the 'workflow_run: ' attribute in Github Actions
 
 
 
-# Стартиране с Docker
+# Starting with Docker
 
-Следните команди трябва да бъдат изпълнени в тази последователност, за да се стартира приложението:
+The following commands need to be executed in order of the app to be run from within a container:
 
-Предварителни изисквания:
+Requirements:
 
-Инсталиран Docker
-Клонирано repository
+Docker installed (If on windows: Docker Desktop)
+This reporitory cloned and having the path ending with '/Funeral_Agency'
 
-# Стъпка 1: Изграждане на Docker Image
+# Step 1: Building the Docker Image
 docker build -t image-name .
+  # Additional information
+      After creating the Docker image you can push it to DockerHub (Open source docker registry)
 
-# Стъпка 2: Стартиране на Контейнера
+# Step 2: Running the Container
 docker run -p 5000:5000 image-name
+
+# Starting the application through Minikube (Local Kubernetes environment)
+
+Minikube is a local kubernetes cluster with one master Node, allowing simple deployments.
+
+Requirements:
+
+Installed Docker
+Installed Minikube
+Installed kubectl
+Docker Image in registry (DockerHub) -> The previous step:
+
+# Step 1: Start Minikube:
+minikube start
+
+# Step 2: Apply the yaml files, allocated in the k8s_manifests folder
+Note: the change the container image in the Deployment.yaml file to your image (However it may be named)
+kubectl apply -f k8s_manifests/deployment.yaml  
+kubectl apply -f k8s_manifests/nodePort.yaml
+
+# Step 3: Verify that everything is up and running:
+Note: There should be three pods running in the node. If for some reason you are in other namespace execute:
+
+Get the pods:
+kubectl get pods --all-namespaces
+The status of the pods named funeral-agency-deployment< Unique identifier > (since we have three pods)
+
+Get the Node Port:
+kubectl get services funeral-agency-node-port (Or the name of your NodePort)
+
+# Step 4 expose the app that is running in your cluster and open it in your default web browser
+
+minikube service funeral-agency-node-port (Or the name of your NodePort)
