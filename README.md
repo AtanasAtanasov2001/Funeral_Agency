@@ -42,8 +42,8 @@ That is used by utilized the 'workflow_run: ' attribute in Github Actions
 # Jobs in the pipeline:
   1. Deploy-To-Minikube -> uses the integrated action to start minikube on the running agent (ubuntu-latest)
                           Pulls the docker image from Dockerhub and applies the kubernetes manifests from the repository to create the following kubernetes instances:
-# Deployment: Defined to have 3 replicas by defautl and uses the container with image, extracted from Dockerhub, on port 5000
-# NodePort: For external access to the application, mapping the port that will be forwarded in the cluster (5000) to the port on which the service will be accessible externaly (5000) 
+ Deployment: Defined to have 3 replicas by defautl and uses the container with image, extracted from Dockerhub, on port 5000
+ NodePort: For external access to the application, mapping the port that will be forwarded in the cluster (5000) to the port on which the service will be accessible externaly (5000) 
 
 ![image](https://github.com/AtanasAtanasov2001/Funeral_Agency/assets/73695057/a3078330-946e-4afe-8823-c446f25e4a69)
 
