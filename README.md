@@ -49,7 +49,8 @@ That is used by utilized the 'workflow_run: ' attribute in Github Actions
 
 
 
-Стартиране с Docker
+# Стартиране с Docker
+
 Следните команди трябва да бъдат изпълнени в тази последователност, за да се стартира приложението:
 
 Предварителни изисквания:
