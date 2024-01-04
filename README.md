@@ -91,6 +91,8 @@ minikube start
 
 # Step 2: Apply the yaml files, allocated in the k8s_manifests folder
 Note: the change the container image in the Deployment.yaml file to your image (However it may be named)
+
+
 kubectl apply -f k8s_manifests/deployment.yaml  
 kubectl apply -f k8s_manifests/nodePort.yaml
 
