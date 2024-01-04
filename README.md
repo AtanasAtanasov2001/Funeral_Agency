@@ -99,11 +99,12 @@ Note: There should be three pods running in the node. If for some reason you are
 
 Get the pods:
 kubectl get pods --all-namespaces
+
 The status of the pods named funeral-agency-deployment< Unique identifier > (since we have three pods)
 
 Get the Node Port:
-kubectl get services funeral-agency-node-port (Or the name of your NodePort)
+kubectl get services funeral-agency-node-port    (Or the name of your NodePort)
 
 # Step 4 expose the app that is running in your cluster and open it in your default web browser
 
-minikube service funeral-agency-node-port (Or the name of your NodePort)
+minikube service funeral-agency-node-port    (Or the name of your NodePort)
