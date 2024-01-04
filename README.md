@@ -65,6 +65,7 @@ The following commands need to be executed in order of the app to be run from wi
 Requirements:
 
 Docker installed (If on windows: Docker Desktop)
+
 This reporitory cloned and having the path ending with '/Funeral_Agency'
 
 # Step 1: Building the Docker Image
@@ -82,8 +83,11 @@ Minikube is a local kubernetes cluster with one master Node, allowing simple dep
 Requirements:
 
 Installed Docker
+
 Installed Minikube
+
 Installed kubectl
+
 Docker Image in registry (DockerHub) -> The previous step:
 
 # Step 1: Start Minikube:
