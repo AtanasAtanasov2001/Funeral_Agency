@@ -65,6 +65,7 @@ The following commands need to be executed in order of the app to be run from wi
 Requirements:
 
 Docker installed (If on windows: Docker Desktop)
+
 This reporitory cloned and having the path ending with '/Funeral_Agency'
 
 # Step 1: Building the Docker Image
@@ -82,8 +83,11 @@ Minikube is a local kubernetes cluster with one master Node, allowing simple dep
 Requirements:
 
 Installed Docker
+
 Installed Minikube
+
 Installed kubectl
+
 Docker Image in registry (DockerHub) -> The previous step:
 
 # Step 1: Start Minikube:
@@ -91,6 +95,8 @@ minikube start
 
 # Step 2: Apply the yaml files, allocated in the k8s_manifests folder
 Note: the change the container image in the Deployment.yaml file to your image (However it may be named)
+
+
 kubectl apply -f k8s_manifests/deployment.yaml  
 kubectl apply -f k8s_manifests/nodePort.yaml
 
@@ -99,11 +105,12 @@ Note: There should be three pods running in the node. If for some reason you are
 
 Get the pods:
 kubectl get pods --all-namespaces
+
 The status of the pods named funeral-agency-deployment< Unique identifier > (since we have three pods)
 
 Get the Node Port:
-kubectl get services funeral-agency-node-port (Or the name of your NodePort)
+kubectl get services funeral-agency-node-port    (Or the name of your NodePort)
 
 # Step 4 expose the app that is running in your cluster and open it in your default web browser
 
-minikube service funeral-agency-node-port (Or the name of your NodePort)
+minikube service funeral-agency-node-port    (Or the name of your NodePort)
