@@ -10,7 +10,6 @@ class Cart:
         self.items.append(item)
 
     def calculate_price(self):
-        # Implement pricing logic based on the selected items
         total_price = 0
         for item in self.items:
             if isinstance(item, Casket):
@@ -21,5 +20,4 @@ class Cart:
                 total_price += item.calculate_price()
         return total_price
     
-# Cart instance
 cart = Cart()

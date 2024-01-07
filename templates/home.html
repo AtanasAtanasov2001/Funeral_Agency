@@ -27,14 +27,12 @@
         <a href="{{ url_for('main.logout') }}">Logout</a>
 
         {% if not burial_type %}
-            <!-- Display burial type selection after logging in -->
             <h2>Choose Burial Type</h2>
             <ul>
                 <li><a href="{{ url_for('main.default_contents', burial_type='ordinary') }}">Ordinary Burial</a></li>
                 <li><a href="{{ url_for('main.default_contents', burial_type='cremation') }}">Cremation</a></li>
             </ul>
         {% else %}
-            <!-- Display customization options based on the selected type -->
             {% if burial_type == 'ordinary' %}
                 <a href="{{ url_for('main.default_contents', burial_type='ordinary') }}">Ordinary Burial</a>
             {% elif burial_type == 'cremation' %}
@@ -42,7 +40,6 @@
             {% endif %}
         {% endif %}
     {% else %}
-        <!-- Display a picture and a login form if not logged in -->
         <img src="{{ url_for('static', filename='Funeral_agency_logo.jpg') }}" alt="Funeral Agency Picture">
         <h2>Login</h2>
         {% if error %}
@@ -58,7 +55,6 @@
         <a href="{{ url_for('main.register') }}">Register</a>
     {% endif %}
 
-    <!-- Add a link to the cart page -->
     <a href="{{ url_for('main.cart_contents') }}">View Cart</a>
 
 </body>

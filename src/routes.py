@@ -110,7 +110,7 @@ def parse_display_string(display_string):
 
         print(f"Key: {key_lower}, Value: {value_stripped}")
 
-        # Handle special cases for numeric values
+        
         if key_lower in ["length", "width", "depth", "height", "volume"]:
             item_info[key_lower] = convert_to_numeric(value_stripped)
         else:
@@ -118,7 +118,6 @@ def parse_display_string(display_string):
 
     print(f"Parsed Item Info: {item_info}")
 
-    # Determine the item type and create the corresponding object
     if item_info["Item Type"] == "Urn":
         return Urn(
             material=item_info.get("material", ""),
@@ -140,9 +139,7 @@ def parse_display_string(display_string):
             width=item_info.get("width", 0),
             height=item_info.get("height", 0),
         )
-    # Add more conditions for other item types
 
-    # If no condition matches, return None or raise an error
     return None
 
 
@@ -161,7 +158,6 @@ def add_to_cart():
         print("ENTER")
         if burial_type == "ordinary":
             print("ENTER ordinary")
-            # Handle customization options for Ordinary Burial (caskets and tombstones)
             wood_type = request.form.get("wood_type")
             length = int(request.form['casket_length'])
             width = int(request.form['casket_width'])
@@ -169,13 +165,11 @@ def add_to_cart():
 
             if length < 60 or width < 60 or depth < 60:
                 raise ValueError("The length/width/depth must be a valid number")
-            # Add the customized casket to the cart
+
             new_casket = Casket(wood_type, length, width, depth)
             caskets.append(new_casket)
             cart.add_item(new_casket)
 
-
-            # Handle customization options for Tombstone
             stone_type = request.form['stone_type']
             engraving = request.form['engraving']
             length_tombstone = int(request.form['tombstone_length'])
@@ -185,7 +179,7 @@ def add_to_cart():
             if length_tombstone < 60 or width_tombstone < 60 or height_tombstone < 60:
                 raise ValueError("The length/width/height must be positive number")
             
-            # Add the customized tombstone to the cart
+
             new_tombstone = Tombstone(stone_type, engraving, length_tombstone, width_tombstone, height_tombstone)
             tombstones.append(new_tombstone)
             cart.add_item(new_tombstone)
@@ -194,7 +188,7 @@ def add_to_cart():
         elif burial_type == "cremation":
             print("ENTER cremation")
 
-            # Handle customization options for Cremation (urns)
+
             volume = int(request.form['volume'])
             if volume < 100:
                 raise ValueError("The volume must be positive number")
@@ -202,16 +196,16 @@ def add_to_cart():
             kind = request.form.get('material')
             color = request.form.get('color')
 
-            # Add the customized urn to the cart
+
             new_urn = Urn(volume, kind, color)
             urns.append(new_urn)
             cart.add_item(new_urn)
 
         session.setdefault("_flashes", []).append(("success", "Customization data saved successfully"))
 
-        # Redirect to the customization page with the burial type
+
         return redirect(url_for("main.cart_contents"))
-    # Add the selected item to the cart
+
     else:
         item = parse_display_string(display_string)
         print("Parsed item:", item)
@@ -238,27 +232,21 @@ main_blueprint.route("/default_contents/<burial_type>", methods=["GET"])(default
     
 
 def customize(burial_type):
-    # print("Entered Customize Endpoint")
-    # print(f"Burial Type: {burial_type}")
-
-    # Ensure a valid burial type is selected
     if burial_type.lower() not in ["cremation", "ordinary"]:
         print("Invalid Burial Type, Redirecting to Home")
         return redirect(url_for("main.home"))
 
-    # Retrieve existing options for caskets, tombstones, and urns
     existing_caskets = [casket.wood_type for casket in caskets]
     existing_tombstones = [tombstone.stone_type for tombstone in tombstones]
     existing_urns = [urn.material for urn in urns]
 
-    # Add the existing options to the context for rendering in the template
     context = {
         'burial_type': burial_type,
         'existing_caskets': existing_caskets,
         'existing_tombstones': existing_tombstones,
         'existing_urns': existing_urns,
     }
-    # Render the customization page with burial type information and existing options
+
     return render_template("customize.html", **context)
 
 
@@ -270,14 +258,8 @@ def cart_contents():
     global cart
     
     
-    # Calculate the total price
     total_price = cart.calculate_price()
-    # Access the Cart instance from your module
-    print("Cart Items:", cart.items)
-    print("Total Price:", total_price)
 
-
-    # Render the cart page with items and total price
     return render_template("cart.html", items=cart.items, total_price=total_price)
 
 main_blueprint.route("/cart", methods=["GET"])(cart_contents)
@@ -308,14 +290,12 @@ def is_valid_cardholder_name(cardholder_name):
 
 def payment():
     if request.method == "POST":
-        # Get form data
         card_type = request.form['card_type']
         card_number = request.form['card_number']
         expiration_date = request.form['expiration_date']
         cvv = request.form['cvv']
         cardholder_name = request.form['cardholder_name']
 
-        # Perform validation
         if (
             is_valid_card_type(card_type) and 
             is_valid_card_number(card_number) and
@@ -323,13 +303,11 @@ def payment():
             is_valid_cvv(cvv) and
             is_valid_cardholder_name(cardholder_name)
         ):
-            # Valid payment details, process payment
             total_price = cart.calculate_price()
             cart.items = []
             flash("Valid payment, redirecting to home menu.")
             return redirect(url_for("main.home"))
         else:
-            # Invalid payment details, show error message
             flash("Invalid payment details. Please check your information and try again.", "error")
 
     # Render the payment form
